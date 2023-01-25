@@ -1,5 +1,81 @@
-#head{
-    margin-left: auto;
-    margin-right:auto;
+body{
+    margin:0;
+    padding:0;
+}
+.container{
+    /* margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px; */
+    width:100%;
+    height: 300px;
+    background-image: linear-gradient(to bottom right, #5c46a6, #fc66f2); 
+    display: flex;
+    align-items: center;
+    position:relative;
+  }
+
+#header{
+    position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    /* padding:0;
+    margin:0; */
+    color:#ffffff;
     text-align: center;
+    text-shadow: 2px 2px #515050;
+
+    /* padding-top:100px; */
+
+}
+#byline{
+    color:#ffffff;
+    margin:0;
+    padding:0;
+    text-align: center;
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 2px 2px #515050;
+
+}
+
+h3{
+    text-align: center;
+    font-size: 30px;
+
+}
+
+ svg{
+    display:block;
+    margin: auto;
+    width: 100%;
+    height:300px;
+    margin:0;
+    padding:0;
+    
+    /* position:relative; */
+} 
+ellipse#C1 {
+    
+    fill: url(#grad1);
+}
+ellipse#C2{
+    fill:url(#grad2);
+    
+}
+path#P1{
+    fill:none;
+    stroke-width:2;
+    stroke:whitesmoke;
+}
+path#P2{
+    fill:none;
+    stroke-width:6;
+    stroke:rgb(0, 0, 255);
+}
+polygon{
+    fill:none;
+    stroke-width: 2;
+    stroke:lightpink;
 }
