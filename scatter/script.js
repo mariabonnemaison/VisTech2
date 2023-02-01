@@ -7,7 +7,7 @@ and discuss the following questions:
         inside of the parentheses for d3.csv()
         referring to?
 
-    This is referencing the folder location and file name of our data source. 
+    ANSWER: This is referencing the folder location and file name of our data source. 
     This way d3.csv knows where to extract the csv file to load into our script.
 
 
@@ -15,18 +15,18 @@ and discuss the following questions:
         the function expression within .then()
         referring to?
 
-        data inside of the .then() is a callback from the promise argument that we can use to reference later on in our code.
+        ANSWER: data inside of the .then() is a callback from the promise argument that we can use to reference later on in our code.
 
 
     - What kind of JS data structure is `data`?
 
-    'data' in this case is an array of objects.
+     ANSWER:'data' in this case is an array of objects.
 
     - Where does the entire d3.csv().then() pattern
         open and close in this document?
 
 
-        d3.csv().then opens with a .then (function(data) {  on line  40 and closes with }); on line 246         
+        ANSWER: d3.csv().then opens with a .then (function(data) {  on line  40 and closes with }); on line 246         
 
     You may find it useful to examine the contents
     of `data` with console.log(data)
@@ -35,7 +35,7 @@ and discuss the following questions:
 
 
 
-d3.csv("scatter/gapminder.csv").then(function(data) {
+d3.csv("./gapminder.csv").then(function(data) {
 
     /*
     DEFINE DIMENSIONS OF SVG + CREATE SVG CANVAS
@@ -46,14 +46,20 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
             elements in the DOM (Document Object Model).
             What do these properties measure?
 
-        document.querySelector(#chart) returns the element with id #chart.
+         ANSWER: document.querySelector(#chart) returns the element with id #chart.
         clientWidth and clientHeight measure the width and height in pixels of the element.
 
 
 
     */
-    const width = document.querySelector("#chart").clientWidth;
-    const height = document.querySelector("#chart").clientHeight;
+
+        width=600
+        height=600
+
+// these const did not work for me
+
+    // const width = document.querySelector("#chart").clientWidth;
+    // const height = document.querySelector("#chart").clientHeight;
     const margin = {top: 50, left: 100, right: 50, bottom: 100};
 
     const svg = d3.select("#chart")
@@ -77,26 +83,30 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
     - What does this method do/how does this method work?
         (What do we get back from using this method?)
 
-.filter() functions filters the dataset according to the attributes that set for it filter by. In this instance the function will filter the data that contains year 2007. 
+        ANSWER: .filter() functions filters the dataset according to the attributes that set for it filter by. In this instance the function will filter the data that contains year 2007. 
         
     - Inside the parentheses for .filter(), there is
         a function expression with a parameter
         named `d`. What is `d` a reference to?
 
 
-        d is a reference to the data that we declared earlier in our code
+         ANSWER: 'd' is referencing the data that we will filter.
 
     - Does that parameter *have to be* named `d`?
         Can it be named something else?
 
+         ANSWER: This parameter can be named anything else, all it does is tell us how to access the current data element
 
     - What is the purpose of the statement inside
         the function expression? What is this doing?
-
         return d.year === '2007';
+
+        ANSWER: this statement is saying that when filtering the data, the function should return from the d(the data) the array labelebed
 
     - Why are we storing the result of data.filter(...)
         inside a variable (filtered_data)?
+
+        ANSWER: We are storing it inside a variable so its easier to reference later, to visualize this specific piece of data.
 
     */
 
@@ -120,11 +130,22 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
     QUESTION 4:
         - What does d3.min() do? What does d3.max() do?
             What are the 2 arguments we supply to d3.min()/d3.max()?
+
+            ANSWER: d3.min() and d3.max() set the minimum and maximum variables of the variables in the data.
+
         - In the second argument for both d3.min() and d3.max(),
             the function expression has a parameter named `d`.
             What is `d` a reference to?
+
+            ANSWER:  'd' is the parameter that allows us to  access the current dataset.
+
+        
         - Why is there a plus sign (+) in front of d.gdpPercap,
             d.lifeExp, and d.pop?
+
+            ANSWER:  The plus sign converts the string into a positive number, so it can be recognized as an integer.
+
+
 
     */
 
@@ -153,12 +174,29 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
 
     QUESTION 5:
         - What does d3.scaleLinear() do?
+
+       ANSWER: d3.scaleLinear() creates a linear scale, in this case for the x and y variables.
+
         - What does d3.scaleSqrt() do?
+
+    ANSWER: d3.scaleSqrt() create a square root scale, which allows us to map the data value to the circle's area. The area of a circle is calcultaed by A=πR^2.
+ 
         - What does d3.scaleOrdinal() do?
+
+        ANSWER: scaleOrdinal() creates an ordinal scale where we can set the domain and range. 
+
         - For each scale below, what does the domain
             represent, and what does the range represent?
+            
+            ANSWER: 
+            For xScale, the domain represents the set of values on the x axis, the range represents the span of our axis in pixels.
+            For yScale, the domain represents the set of values on the y scale from 0 to the max of lifeExp, the range represents the span of the domain in pixels. In other words, where the values will sit on the axis.
+            For rScale, the domain is the set of values for population, and the range is the area of the circles according to the values on the domain.
+            For fillScale, the domain is the set of values, in this case strings, that indicate the continent. The range is the color that represents each continent.
+
         - For each scale below, how many values are in
             the domain and range?
+
 
 
     */
@@ -187,8 +225,15 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
     
     The following chunks of code draw 2 axes -- an x- an y-axis.
         - What is the purpose of the "g" element being appended?
+       
+        ANSWER:  the 'g' element is a container that allows us to  group svg elements together, in this case the x and y axis.
+
         - What is the purpose of the "transform" attribute being defined?
+        ANSWER:  The transform attribute sets the location and length of the axis.
+
         - What do the d3.axisBottom() and d3.axisLeft() methods do?
+
+        ANSWER:  d3.axisbottom() creates an axis on the bottom of the graph, while axisLeft places the axis to the left of the graph elements.
 
     */
     const xAxis = svg.append("g")
@@ -214,11 +259,18 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
 
     The following chunk of code is the standard D3 data join pattern.
         - What is the purpose of the pattern svg.selectAll().data().enter().append()?
+
+ ANSWER: The pattern sets up an enter update exit process to visualize the data. .data(filtered_data) indicates where the data is coming from and .enter() loads the data into the svg circles.
+
         - Each attribute defined below is defined using things called
             "accessor functions." In each accessor function, what is
             the parameter named `d` a reference to?
+ ANSWER: 'd' is referencing the current dataset. the function is saying that from the current data, return xScale for gdpPercap.
+
         - Inside each accessor function, what is the purpose of
             each "return ___;" statement?
+ ANSWER: the return statements for the first .attr is requesting the function to return gdpPercap using the xScale. The same applies to the other attributes and their respective scales.
+
 
     */
     const points = svg.selectAll("circle")
@@ -241,6 +293,8 @@ d3.csv("scatter/gapminder.csv").then(function(data) {
     "transform", "x", and "y" attributes, in terms of
     how their values are computed to control the rotated
     placement of the label?
+
+    ANSWER: the attributes are stating where the text will be loacted in refernce to the axis elements. for intance the xAxisLabel will be positioned at the half of the width that we set previously.
 
     */
     const xAxisLabel = svg.append("text")
