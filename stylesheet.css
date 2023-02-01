@@ -45,6 +45,9 @@ h3{
     font-size: 30px;
 
 }
+h2{
+    text-align:center
+}
 
  svg{
     display:block;
@@ -78,4 +81,9 @@ polygon{
     fill:none;
     stroke-width: 2;
     stroke:lightpink;
+}
+
+#projects{
+    text-align: center;
+    font-size: larger;
 }
