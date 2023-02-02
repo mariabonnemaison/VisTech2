@@ -344,8 +344,8 @@ d3.csv("./gapminder.csv").then(function(data) {
         .append("svg")
         .attr("height", legendHeight)
         .attr("width", legendWidth)
-        .attr("stroke","black")
-        .attr("fill","white")
+        .attr("stroke","black");
+        // .attr("fill","white")
 
     const continents = ["Asia", "Europe", "Africa", "Americas", "Oceania"]
     
@@ -358,10 +358,10 @@ d3.csv("./gapminder.csv").then(function(data) {
         .attr("fill", fillScale(continents));
 
         colorLegend.append("text")
-        .attr("class", "legend--label")
+        .attr("class", "legend-label")
             .attr("x", 30 + legendMargin + i*legendSpacing)
             .attr("y", legendMargin +25 )
-            .text(continents)
+            .text(continents);
 
     });
     const allCategories= data.map(function(d){
