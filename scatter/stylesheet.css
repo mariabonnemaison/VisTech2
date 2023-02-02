@@ -1,0 +1,24 @@
+h1{
+    text-align: center;
+}
+
+.tooltip{
+    position:absolute;
+    visibility: hidden;
+    top:0;
+    left:0;
+
+}
+
+#chart{
+    position:relative;
+}
+
+#Legend{
+    width:35%;
+    float:left;
+}
+.legend--label{
+    font-size:12pt;
+
+}

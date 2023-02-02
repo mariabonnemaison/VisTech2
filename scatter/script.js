@@ -53,8 +53,8 @@ d3.csv("./gapminder.csv").then(function(data) {
 
     */
 
-        width=600
-        height=600
+    var width=document.querySelector("#chart").clientWidth;
+    var height=600;
 
 // these const did not work for me
 
@@ -309,5 +309,67 @@ d3.csv("./gapminder.csv").then(function(data) {
         .attr("x",-height/2)
         .attr("y",margin.left/2)
         .text("Life Expectancy (Years)");
+
+
+    const tooltip=d3.select('#chart')
+        .append('div')
+        .attr('class','tooltip');
+
+    points.on("mouseover", function(e,d){
+
+        console.log("In here");
+
+        let x=+d3.select(this).attr('cx');
+        let y=+d3.select(this).attr('cy');
+
+        let displayValue = d3.format(',')(d.pop);
+
+        tooltip.style("visibility", "visible")
+            .style("top",`${y}px`)
+            .style("left",`${x}px`)
+            .html(`<p><b>${d.country}</b><br><em>${d.continent}</em></br>${displayValue}</p>`);
+
+    }).on("mouseout", function(){
+
+        tooltip.style("visibility", "hidden");
+
+    });
+
+    const legendHeight= 150;
+    const legendWidth= document.querySelector("#legend").clientWidth;
+    const legendSpacing=100;
+    const legendMargin=20;
+
+    const colorLegend = d3.select("#legend")
+        .append("svg")
+        .attr("height", legendHeight)
+        .attr("width", legendWidth)
+        .attr("stroke","black")
+        .attr("fill","white")
+
+    const continents = ["Asia", "Europe", "Africa", "Americas", "Oceania"]
+    
+    continents.forEach (function(continents, i){
+        
+        colorLegend.append ("circle")
+        .attr("cx", 30 + legendMargin + i*legendSpacing)
+        .attr("cy", legendMargin)
+        .attr("r", 10)
+        .attr("fill", fillScale(continents));
+
+        colorLegend.append("text")
+        .attr("class", "legend--label")
+            .attr("x", 30 + legendMargin + i*legendSpacing)
+            .attr("y", legendMargin +25 )
+            .text(continents)
+
+    });
+    const allCategories= data.map(function(d){
+        return d.continent;
+    })
+ console.log(allCategories)
+
+const uniqueCategories= [...new Set(allCategories)];
+console.log(uniqueCategories)
 
 });
