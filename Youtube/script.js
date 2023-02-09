@@ -87,7 +87,7 @@ function parseCsv(d) {
 }
 
 
-d3.csv("/data/youtube.csv", parseCsv).then(function(data) {
+d3.csv("./data/youtube.csv", parseCsv).then(function(data) {
 
     console.log(data);
 
