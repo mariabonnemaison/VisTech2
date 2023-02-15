@@ -3,6 +3,7 @@
 }
 
 
+
 html, body {
   margin: 0px;
   padding: 0px;
@@ -11,8 +12,12 @@ html, body {
 
 h1 {
   text-align: center;
+  font-size: 3vw;
 }
 
+h2 {
+font-size: 1vw;
+}
 #chart--container {
   width: 100%;
 }
@@ -26,22 +31,23 @@ h1 {
 
 #legend {
   width: 20%;
+  margin: 0;
   float: right;
 }
 
-.legend--label {
-  font-size: 12pt;
-  dominant-baseline: central;
+.legend-label {
+  font-size: 1vw;
+  /* dominant-baseline: central; */
 }
 
 .axis--label{
-  font-size: 16pt;
+  font-size: 1vw;
   font-weight: bold;
   text-anchor: middle;
 }
 
 .axis {
-  font-size: 10pt;
+  font-size: 2vh;
 }
 
 .tooltip {
@@ -53,4 +59,47 @@ h1 {
   padding: 2px;
   background-color: rgba(255,255,255,0.8);
   font-size: 11pt;
+}
+
+
+@media screen and (max-width: 375px){
+  #legend{
+    float:none;
+    margin:0 0 10 10 ;
+  }
+   #chart{
+  padding:0;
+  float: left;
+  height: 150px;
+   }
+
+   h2{
+    margin: 10;
+    text-align: center;
+   }
+
+   .axis--label{
+    font-size: 2vh;
+   }
+  }
+
+  @media screen and (min-width:768px){
+    
+#legend{
+    /* float:none;
+    margin:0 0 10 10 ; */
+    
+  }
+  body{
+    background-color: rgb(236, 215, 255);
+  }
+
+  }
+
+  @media screen and (min-width:992px){
+    body{
+    background-color: rgb(189, 211, 253);
+  }
+
+
 }

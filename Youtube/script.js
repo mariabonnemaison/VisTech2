@@ -101,8 +101,10 @@ d3.csv("./data/youtube.csv", parseCsv).then(function(data) {
 
      const svg = d3.select("#chart")
         .append("svg")
-         .attr("width", width)
-        .attr("height", height);
+        //  .attr("width", width)
+        // .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");  
     
     /*
     
@@ -331,6 +333,18 @@ console.log(uniqueCategories)
     .append('div')
     .attr('class','tooltip');
 
+    let tw = svg.node().clientWidth;
+    let th = svg.node().clientHeight;
+    let sx = tw / width;
+    let sy = th / height;
+
+    d3.select(window).on("resize", function() {
+        let tw = svg.node().clientWidth;
+    let th = svg.node().clientHeight;
+        sx = tw / width;
+        sy = th / height;
+            });
+
 // points.on("mouseover", function(e,d){
 
 
@@ -379,11 +393,13 @@ console.log(uniqueCategories)
     */
 
         points.on("mouseover", function(e, d) {
-            let x=+d3.select(this).attr('cx');
-            let y=+d3.select(this).attr('cy');
+            let x=sx*(+d3.select(this).attr('cx'));
+            let y=sy*(+d3.select(this).attr('cy'));
         
             let displayValue = d3.format(',')(d.views);
             let commentValue=d3.format(',')(d.comments);
+
+           
         
             tooltip.style("visibility", "visible")
             .style("top",`${y+10}px`)
@@ -465,6 +481,7 @@ console.log(uniqueCategories)
     categories.forEach (function(categories, i){
         
         colorLegend.append ("circle")
+        .attr("class","legendCir")
         .attr("cx",legendMargin )
         .attr("cy",legendMargin+ i*legendSpacing)
         .attr("r", 10)
