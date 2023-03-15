@@ -1,163 +1,187 @@
 // 1. Grab the dimensions of the open window in the browser.
 // Our geographical map will extend throughout the window.
-// Store the svg canvas element (see html) associated with the #chart,
-// and define its viewport parameters.
 
-const windowWidth = window.innerWidth, windowHeight = window.innerHeight;
+const width = window.innerWidth, height = window.innerHeight;
 
-const svg = d3.select("div#chart")
-            .append("svg")
-            .attr("width", windowWidth)
-            .attr("height", windowHeight)
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .style("background-color", "#fff");
+// Try to use these two variables for `width` and `height` instead and
+// notice what happens to the size of the map visualization. Can you tell why?
 
-// We will use this constructor below to draw graticule over our map
-const graticule = d3.geoGraticule();
+// const width = document.querySelector("#viz").clientWidth;
+// const height = document.querySelector("#viz").clientHeight;
 
-// Create a group `g` HTML element to append all of our objects to.
-const g = svg.append("g");
+// 2. We initialize variables for the svg container that holds all
+// of our visualization elements. And we also initialize a variable
+// to store just the element that holds our map; this element is a group
+// that in HTML tags is given by "g". See the index.html for more information.
 
-/* 
-    ADD TOOLTIP FOR LATER
-*/
-const tooltip = d3.select("#chart")
-    .append("div")
-    .attr("class", "tooltip");
+const svg = d3.select("#viz")
+            .attr("width", width)
+            .attr("height", height);
 
-// Define the settings for map projection
-const projection = d3.geoEqualEarth()
-    .translate([windowWidth / 2, windowHeight / 2])
-    .scale(250)
-    .center([0, 0]);
+const map = svg.select("#map");
 
-// Create the Geo Path generator
-let geoPathGenerator = d3.geoPath().projection(projection);
+// 3. Because we are creating a map, we also want to add some kind of "ocean". This is going
+// to be just a rectangle that has an ID called #ocean. See the index.html
 
-/**
- * Loading Data
- */
+d3.select("#ocean")
+  .attr("width", width)
+  .attr("height", height);
 
-let promises = [];
+// 4. Here start building the geographical map by first loading a TopoJSON file.
 
-promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"));
-promises.push(d3.csv("data/all_day.csv"));
+d3.json("./USmap.json").then(function(world) {
 
-/**
- * When all the data have been loaded, we call the function that draws a map in terms of them.
- * Experiment with console.log() to see how d3.json and d3.csv load files.
- * Promises have three states: pending, fulfilled, and rejected
- * What you want is to have all primises being fulfilled before you move forward
- * with working with the data you loaded.
- * 
- * Promise.all() is a static method that waits for all promises to be fullfilled.
- * 
- * For more information on JavaScript promises, see:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
- */
+    /** 
+     * 5.
+     * This function converts the loaded TopoJSON object to GeoJSON
+     * It creates an array of JavaScript objects where each object stores:
+     * (a) Geometry (e.g., polygons) defined by a list of coordinates.
+     * (b) ID, which in this case is the ISO code of a country
+     * (c) Properties, in this case `name` and `iso`. e.g., name: "Argentina", iso: "ARG"
+    */
 
-Promise.all(promises).then(function(results){
-    drawMap(results[0], results[1]);
-})
+    var geoJSON = topojson.feature(world, world.objects.countries);
+    
+    // 6.
+    // We are removing the JavaScript object that stores the features
+    // of Antarctica because we will hide Antarctica from the map we are making. 
 
-/**
- * The following function accepts two datasets and draws a geographical map.
- * Includes:
- * (1) Drawing of polygons 
- * (2) Drawing of circles representing locations on the map
- * (3) Tooltip functionality on the circles
- * (4) Drawing of graticule
- * (5) Zoom and Pan behaviour
- * 
- * @param {*} geo A GeoJSON data type storing geographical information
- * @param {*} data A CSV file representing an array of JavaScript objects
- */
-function drawMap(geo, data) {
+    geoJSON.features = geoJSON.features.filter(function(d) {
 
-    // Print the results from loading `geo` and `data`. Both should be data types
-    // console.log('GEO: ', geo);
-    // console.log('dataset: ', data);
-
-    // we want to scale the size of each bubble based on an attribute of the data
-    var rScale = d3.scaleSqrt()
-        .domain(d3.extent(data, function (d) { return +d.mag }))
-        .range([0.1, 20]);
-
-    // Draw the map
-    g.selectAll("path")
-        .data(geo.features)
-        .enter()
-        .append("path")
-        // draw each country
-        .attr("d", geoPathGenerator)
-        .attr("country", function (d) { return d.id; })
-        // set the styling of each country, and other attributes
-        .attr("class", 'continent')
-        .attr("vector-effect", "non-scaling-stroke"); // this is an SVG attribute
-
-    // Draw Circles representing Earthquakes
-    var scale = 1.5;
-
-    g.selectAll('circle')
-        .data(data)
-        .join('circle')
-        .style("stroke-width", 0.5)
-        .style("stroke", "gray")
-        .attr("fill-opacity", 0.5)
-        .attr("fill", "orange")
-        .attr("cx", function (d) {
-            // console.log(projection([d.longitude, d.latitude]))
-            return projection([d.longitude, d.latitude])[0];
-        })
-        .attr("cy", function (d) { 
-            return projection([d.longitude, d.latitude])[1];
-        })
-        .attr("r", function (d) {
-            // Change the `scale` parameter to increase/decrease radius
-            return rScale(d.mag)*scale;
-        })// Tooltip
-   
-
-        .on('mouseover', function (e, d) {
-            d3.select(this).style("stroke", "black")
-        tooltip.html("Magnitude: " +d.mag + "<br>Location: " + d.place); 
-        return tooltip.style("visibility", "visible");
-    })
+        return d.id !== "ATA";
         
+    });
 
-        .on('mousemove', function (e, d) {
-          
-        return tooltip
-     
-        .style("left", d3.select(this).attr("cx") + "px")  
-        .style("top",d3.select(this).attr("cy") + "px");
-        })
-        .on('mouseout', function () {
-            // TO DO
-            d3.select(this).style("stroke", "gray")
-            return tooltip.style("visibility", "hidden");
+    /**
+     * 7. Map Projections
+     * 
+     * Just like we set up a linear scale for mapping data values to pixel positions
+     * in a bar chart or scatter plot (e.g., with linearScale), we need to create a
+     * function that maps raw coordinate values given in the geoJSON file into screen
+     * pixels. There is no one way of using projections for creating maps. In general,
+     * the visible size of a countries boundary shape depends on the projection used
+     * to make it visible. See this: https://www.thetruesize.com
+     * 
+     * In the following we will set up a "flat" map projection otherwise known as
+     * spherical Mercator projection (an equirectangular projection).
+     * 
+     * For more information on projections that d3 implements, see:
+     * https://github.com/d3/d3-geo#azimuthal-projections
+    */
 
+    var proj = d3.geoMercator().fitSize([width, height], geoJSON);
+
+    /**
+     * 8. Geographical Path Constructor
+     * 
+     * 
+     */
+
+    var path = d3.geoPath().projection(proj);
+
+    map.selectAll("path")
+        .data(geoJSON.features)
+        .enter().append("path")
+        // we use the "d" attribute in SVG graphics to define a path to be drawn
+        // "d" is a presentation attribute, so can also be used as a CSS property
+        .attr("d", path)
+        .attr("fill", "#FCEDDA")
+        .attr("vector-effect", "non-scaling-stroke")
+        .attr("stroke", "#FC766AFF")
+        .attr("stroke-width", "0.1px");
+    
+    /**
+     * 9. Plotting on the Geographical Map
+     * 
+     * Plot two circles on the geographical map to denote the location 
+     * of particular cities. The location of a city is given by the 
+     * coordinates for latitude and longitude. Once you get the
+     * coordinates, you use the projection function defined previously,
+     * e.g., the Mercator projection, and you pass in those coordinates
+     * in the function to project them onto the map as pixel positions.
+     */
+
+    // NOTE: The coordinates for a city are given as: [longitude, latitude]
+    //       because that is how the projection function wants them.
+    var points = [
+        {"name": "Boston", "coords": [-71.0589, 42.3601]},
+        {"name": "London", "coords": [-0.1278, 51.5074]}
+    ];
+
+    // 10. The following is a D3 join pattern for adding SVG circle shapes. 
+    //
+    // Here, notice how we transform the circles using
+    // the projection function we defined previously. Essentially, the
+    // projection is just a function that requires an input argument, 
+    // namely the coordinates of a point.
+
+    // We define a variable for the radius of the circles that represent our cities.
+    // We will use this variable in two different places below.
+
+    var circleRadius = 4;
+
+    map.selectAll("circle")
+        .data(points)
+        .enter().append("circle")
+        .attr("r", circleRadius)
+        .attr("fill", "#201E20")
+        .attr("transform", function(d) {
+            return "translate(" + proj(d.coords) + ")";
         });
 
-    // Draw the graticule grid line on the map
-    d3.select("g").append("path")
-        .datum(graticule)
-        .attr("d", geoPathGenerator)
-        .attr("fill", "none")
-        .attr("stroke", "lightgray")
-        .attr("stroke-width", "0.5px");
-    
-    d3.select("g").append("path")
-        .datum(graticule.outline)
-        .attr("d", geoPathGenerator)
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", "1px");
-    
-    // create a zoom function
-    var zoom = d3.zoom();
+    /**
+     * 11. D3 Zoom and Pan
+     * 
+     * D3 provides a method called .zoom() that adds zoom and pan behaviour to an
+     * HTML or SVG element. 
+     * 
+     * For more information, see: https://www.d3indepth.com/zoom-and-pan/
+     * 
+     * Documentation: https://github.com/d3/d3-zoom
+     */
 
-    // call zoom so it is "listening" for an event on our SVG
+    function zoomed(e) {
+        // The parameter `e` represents an event, that is, a zoom event.
+        // e.transform represents the latest zoom transform caused by a zoom event
+        // and it is applied to the svg map element (see the index.html).
+        map.attr("transform", e.transform);
+
+        // RESIZING Circles: 
+        // Uncomment the following lines of code to scale the circles/cities 
+        // based on how you zoom into the map.
+
+        // We divide our original circleRadius with the current transformation
+        // of our `map` container caused by the zooming behaviour. The attribute
+        // .k retrieves the scaling factor of the current transformation.
+
+        // Take a look at the documentation for D3 events to understand what 
+        // <event>.transform.k means:
+        // https://github.com/d3/d3-zoom#zoom-transforms
+
+        map.selectAll("circle")
+            .attr("r", function(d){
+                return circleRadius /e.transform.k;
+            });
+    };
+
+    // Calling d3.zoom() creates a zoom behavior. Note, the .zoom() method 
+    // handles both zoom and pan events.
+    let zoom = d3.zoom()
+        // This essentially constraints the user so that the user can only
+        // zoom and pan within specific bounds, e.g., our window's width and height.
+        // Top-Left Point of Browser: [0, 0]
+        // Bottom-Right Point of Browser: [width, height]
+        .translateExtent([[0, 0], [width, height]])
+        // This constraints the extent to which you can zoom in and out.
+        //          [minimum scale factor, maximum scale factor]
+        // Experiment with different values to see the behavior of zooming.
+        .scaleExtent([1, 15])
+        // The .on() method is D3's standard event listener, like user clicks, mouseover, etc.
+        .on("zoom", zoomed);
+
+    // Here, we allow the zoom function which controls the zoom and pan behavior to be called
+    // into the element we selected, i.e., the svg container that holds all our visualization.
+    // See the beginning of this file for how the variable `svg` is defined.
     svg.call(zoom);
 
-}
+});
