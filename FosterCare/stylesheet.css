@@ -1,0 +1,37 @@
+body{
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+}
+
+#header {
+    background-color: #75151E;
+    color:aliceblue;
+    margin:0;
+    padding: 100px 50px ;
+    font-family: 'Playfair Display', serif;
+   
+    /* #D6D6D6 */
+    
+}
+h1{
+
+    font-weight: 600;
+    font-size: 50px;
+    padding:0 0 0 0;
+
+
+}
+
+h2{
+    font-weight: 400;
+    font-size: 30px;
+    padding:0 0 0 0;
+
+}
+
+h3{
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 14px;
+    margin:40px ;
+}
