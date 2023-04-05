@@ -32,7 +32,6 @@ h2{
 
 
 #one {
-
     font-family: 'Playfair Display', serif;
     font-weight: 400;
     font-size: 18px;
@@ -44,5 +43,9 @@ h3{
     font-weight: 400;
     font-size: 16px;
     margin:40px 500px 20px 80px ;
+}
+
+#viz{
+    position: absolute;
 }
 
