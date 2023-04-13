@@ -73,7 +73,9 @@ var mergedData = geoJSON.features.map(function(d) {
   var csvRow = data.find(function(row) {
     return row.location === d.properties.name; // match on ID or another property
   });
-  d.properties.total_per_cap = csvRow ? +csvRow.total_per_cap : null; // add data value to GeoJSON property
+  d.properties.total_per_cap = csvRow ? +csvRow.total_per_cap : null;
+  d.properties.his_per_cap= csvRow ? + csvRow.his_per_cap: null;
+  d.properties.bl_per_cap= csvRow ? + csvRow.his_per_cap_under18: null; // add data value to GeoJSON property
   return d;
 });
 
@@ -167,6 +169,14 @@ var colorScale = d3.scaleLog()
       //   return colorScale(row.his_per_cap);
        
       
+
+      // const button = d3.select("body")
+      // .append("button")
+      // .text("Filter");
+
+      // button.on("click", function() {
+      //   const filteredData = data.filter(d => d.value > 15);
+
 
 });
 
