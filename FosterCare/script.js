@@ -48,6 +48,8 @@ Promise.all([
 
     console.log(total)
 
+const [minValue, maxValue] = d3.extent(data, d => d.total_per_cap_under18);
+console.log(minValue, maxValue)
 
 
     var colorScale = d3.scaleLog()
@@ -115,7 +117,35 @@ Promise.all([
     .attr("y", 20)
     .attr("text-anchor", "middle")  
     .style("font-size", "16px") 
-    .text("Number of Children in Foster Care per State")
+    .text("Number of Children in Foster Care per State");
+
+
+const legendValues= [50,100, 500, 1000, 5000]
+// Create legend container
+const legend = svg.append('g')
+.attr('class', 'legend')
+.attr('transform', `translate(${width - 100}, ${height - 200})`)
+
+// Create legend elements
+legend.selectAll('rect')
+.data(legendValues)
+.enter()
+.append('rect')
+.attr('x', 0)
+.attr('y', (d, i) => i * 20)
+.attr('width', 10)
+.attr('height', 10)
+.attr('fill', d => colorScale(d))
+
+legend.selectAll('text')
+.data(legendValues)
+.enter()
+.append('text')
+.attr('x', 15)
+.attr('y', (d, i) => i * 20 + 10)
+.text(d => `${d}`)
+.attr('font-size', '12px');
+
 
     
 
@@ -139,6 +169,10 @@ Promise.all([
         .domain(d3.extent(data, d => d.his_per_cap_under18))
         .range(["#ffffcc", "#990000"]);
 
+ const [hisminValue, hismaxValue] = d3.extent(data, d => d.his_per_cap_under18);
+ console.log(hisminValue, hismaxValue);
+
+
 
       let b = svg.selectAll("path")
         .data(total)
@@ -157,6 +191,37 @@ Promise.all([
         .transition() // a transition makes the changes visible...
         .duration(1500)
         .style("fill", d => newcolorScale(d.properties.his_per_cap_under18))
+
+// legend.attr("opacity", 0);
+//         const legendValues= [50, 100, 500, 1000]
+//         // Create legend container
+//         const legend2 = svg.append('g')
+//         .attr('class', 'legend')
+//         .attr('transform', `translate(${width - 100}, ${height - 200})`)
+        
+//         // Create legend elements
+//         legend2.selectAll('rect')
+//         .data(legendValues)
+//         .enter()
+//         .append('rect')
+//         .attr('x', 0)
+//         .attr('y', (d, i) => i * 20)
+//         .attr('width', 10)
+//         .attr('height', 10)
+//         .attr('fill', d => colorScale(d))
+        
+//         legend2.selectAll('text')
+//         .data(legendValues)
+//         .enter()
+//         .append('text')
+//         .attr('x', 15)
+//         .attr('y', (d, i) => i * 20 + 10)
+//         .text(d => `${d}`)
+//         .attr('font-size', '12px');
+        
+        
+            
+        
     
     });
 
