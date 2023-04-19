@@ -49,3 +49,17 @@ h3{
     position: absolute;
 }
 
+/* #bars{
+    margin:100px;
+} */
+
+button{
+    padding:10px;
+    margin:10px;
+    
+}
+
+.tooltip{
+    background-color: antiquewhite;
+}
+
