@@ -9,8 +9,8 @@ The objective of this data project is to analyze the distribution of children in
 
 Project Link: https://mariabonnemaison.github.io/VisTech2/FosterCare/index.html
 
-Write-Up :
-[Bonnemaison Worksheet For Final Project Demos (1).pdf](https://github.com/mariabonnemaison/VisTech2/files/11279689/Bonnemaison.Worksheet.For.Final.Project.Demos.1.pdf)
+Write-Up :[Bonnemaison _Maria_FinalProject.pdf](https://github.com/mariabonnemaison/VisTech2/files/11279706/Bonnemaison._Maria_FinalProject.pdf)
+
 
 Data Cleaning: [fostercare_notebook.html.zip](https://github.com/mariabonnemaison/VisTech2/files/11279693/fostercare_notebook.html.zip)
 
