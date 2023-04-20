@@ -42,7 +42,7 @@ h3{
     font-family: 'Playfair Display', serif;
     font-weight: 400;
     font-size: 16px;
-    margin:40px 500px 20px 80px ;
+    margin:40px 500px 40px 80px ;
 }
 
 #viz{
@@ -61,5 +61,10 @@ button{
 
 .tooltip{
     background-color: antiquewhite;
+}
+
+#doc{
+    position: absolute;
+    margin-top: 700px;
 }
 

@@ -116,7 +116,7 @@ console.log(minValue, maxValue)
     .attr("x", (width / 2))             
     .attr("y", 20)
     .attr("text-anchor", "middle")  
-    .style("font-size", "16px") 
+    .style("font-size", "20px") 
     .text("Number of Children in Foster Care per State");
 
 
@@ -131,20 +131,20 @@ legend.selectAll('rect')
 .data(legendValues)
 .enter()
 .append('rect')
-.attr('x', 0)
+.attr('x',0)
 .attr('y', (d, i) => i * 20)
-.attr('width', 10)
-.attr('height', 10)
+.attr('width', 20)
+.attr('height', 20)
 .attr('fill', d => colorScale(d))
 
 legend.selectAll('text')
 .data(legendValues)
 .enter()
 .append('text')
-.attr('x', 15)
+.attr('x', 30)
 .attr('y', (d, i) => i * 20 + 10)
 .text(d => `${d}`)
-.attr('font-size', '12px');
+.attr('font-size', '15px');
 
 
     
@@ -162,8 +162,8 @@ legend.selectAll('text')
     button1.on("click", function () {
       title.text("Hispanic Children in Foster Care");
 
-      tooltip
-      .html("New tooltip text for button 1");
+      // tooltip
+      // .html("New tooltip text for button 1");
 
       var newcolorScale = d3.scaleLog()
         .domain(d3.extent(data, d => d.his_per_cap_under18))
@@ -176,7 +176,6 @@ legend.selectAll('text')
 
       let b = svg.selectAll("path")
         .data(total)
-
       b.enter()
         .append("path")
         .attr("d", path)
@@ -184,44 +183,22 @@ legend.selectAll('text')
         .attr("stroke", "black")
         .attr("stroke-width", "0.5px")
         .style("position", "absolute")
-        // .style("fill", d => colorScale(d.properties.total_per_cap_under18))
-        // .on("mouseover", mouseover)
-        //  .on("mouseout", mouseout)
+        .on("mouseover", function(event){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9)
+          tooltip.html(d.properties.name + ": " + formatNumber(d.properties.his_per_cap_under18))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+            .style("position", "absolute")
+        })
+        .on("mouseout", mouseout)
         .merge(b)
         .transition() // a transition makes the changes visible...
         .duration(1500)
         .style("fill", d => newcolorScale(d.properties.his_per_cap_under18))
+        
 
-// legend.attr("opacity", 0);
-//         const legendValues= [50, 100, 500, 1000]
-//         // Create legend container
-//         const legend2 = svg.append('g')
-//         .attr('class', 'legend')
-//         .attr('transform', `translate(${width - 100}, ${height - 200})`)
-        
-//         // Create legend elements
-//         legend2.selectAll('rect')
-//         .data(legendValues)
-//         .enter()
-//         .append('rect')
-//         .attr('x', 0)
-//         .attr('y', (d, i) => i * 20)
-//         .attr('width', 10)
-//         .attr('height', 10)
-//         .attr('fill', d => colorScale(d))
-        
-//         legend2.selectAll('text')
-//         .data(legendValues)
-//         .enter()
-//         .append('text')
-//         .attr('x', 15)
-//         .attr('y', (d, i) => i * 20 + 10)
-//         .text(d => `${d}`)
-//         .attr('font-size', '12px');
-        
-        
-            
-        
     
     });
 
@@ -255,14 +232,22 @@ legend.selectAll('text')
         .attr("stroke", "black")
         .attr("stroke-width", "0.5px")
         .style("position", "absolute")
-        // .style("fill", d => colorScale(d.properties.total_per_cap_under18))
-        // .on("mouseover", mouseover)
-        // .on("mouseout", mouseout)
+        .on("mouseover", function(event){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9)
+          tooltip.html(d.properties.name + ": " + formatNumber(d.properties.bl_cap_under18))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+            .style("position", "absolute")
+        })
+        .on("mouseout", mouseout)
         .merge(b)
         .transition() // a transition makes the changes visible...
         .duration(1500)
         .style("fill", d => blcolorScale(d.properties.bl_cap_under18))
-        // .on("mouseover", mouseover)
+        
+  
         
     });
 
@@ -292,14 +277,21 @@ legend.selectAll('text')
         .attr("stroke", "black")
         .attr("stroke-width", "0.5px")
         .style("position", "absolute")
-        // .style("fill", d => colorScale(d.properties.total_per_cap_under18))
-        // .on("mouseover", mouseover)
-        // .on("mouseout", mouseout)
+        .on("mouseover", function(event){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9)
+          tooltip.html(d.properties.name + ": " + formatNumber(d.properties.ai_per_cap_under18))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+            .style("position", "absolute")
+        })
+        .on("mouseout", mouseout)
         .merge(b)
         .transition() // a transition makes the changes visible...
         .duration(1500)
         .style("fill", d => aicolorScale(d.properties.ai_per_cap_under18))
-        // .on("mouseover", mouseover)
+       
        
       
     });
@@ -328,14 +320,22 @@ legend.selectAll('text')
         .attr("stroke", "black")
         .attr("stroke-width", "0.5px")
         .style("position", "absolute")
-        // .style("fill", d => colorScale(d.properties.total_per_cap_under18))
-        // .on("mouseover", mouseover)
-        // .on("mouseout", mouseout)
+        .on("mouseover", function(event){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9)
+          tooltip.html(d.properties.name + ": " + formatNumber(d.properties.his_per_cap_under18))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+            .style("position", "absolute")
+        })
+        .on("mouseout", mouseout)
+      
         .merge(b)
         .transition() // a transition makes the changes visible...
         .duration(1500)
         .style("fill", d => whcolorScale(d.properties.wh_cap_under18))
-        // .on("mouseover", mouseover)
+        
       
     });
 
@@ -364,9 +364,16 @@ legend.selectAll('text')
         .attr("stroke", "black")
         .attr("stroke-width", "0.5px")
         .style("position", "absolute")
-        // .style("fill", d => colorScale(d.properties.total_per_cap_under18))
-        // .on("mouseover", mouseover)
-        // .on("mouseout", mouseout)
+        .on("mouseover", function(event){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9)
+          tooltip.html(d.properties.name + ": " + formatNumber(d.properties.total_per_cap_under18))
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+            .style("position", "absolute")
+        })
+        .on("mouseout", mouseout)
         .merge(b)
         .transition() // a transition makes the changes visible...
         .duration(1500)
@@ -447,109 +454,6 @@ const barheight = 400 - margin.top - margin.bottom;
 
 
 
-
-
-
-
-
-
-
-
-
-// const width = window.innerWidth,height = window.innerHeight;
-
-// const svg = d3.select("#viz")
-//   .attr("width", width)
-//   .attr("height", height);
-
-//   var num= 5;
-
-
-// const url =  "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
-
-
-// Promise.all([
-//   d3.json(url),
-//   d3.json("foster.json")
-// ])
-
-// .then(function([json, data]) {
-
-
-//     var geoJSON = topojson.feature(json, json.objects.states);
-
-
-
-// const [minValue, maxValue] = d3.extent(data, d => d.total_per_cap);
-
-
-// const proj = d3.geoAlbersUsa().fitSize([width, height], geoJSON);
-// const path = d3.geoPath().projection(proj);
-
-
-
-
-// var mergedData = geoJSON.features.map(function(d) {
-//   var csvRow = data.find(function(row) {
-//     return row.location === d.properties.name; 
-//   });
-//   d.properties.total_per_cap = csvRow ? +csvRow.total_per_cap : null; 
-//   return d;
-// });
-
-// console.log(mergedData)
-
-
-
-//   var colorScale = d3.scaleSequential()
-//   .domain([minValue, maxValue])
-//  .interpolator(d3.interpolateViridis);
-
-//  var tooltip = d3.select("body")
-//   .append("div")
-//   .attr("class", "tooltip")
-//   .style("opacity", 0)
-
-
-//   function mouseover(event, d) {
-//     tooltip.transition()
-//       .duration(200)
-//       .style("opacity", .9)
-//     tooltip.html(d.properties.name + ": " + d.properties.total_per_cap)
-//       .style("left", (event.pageX ) + "px")
-//       .style("top", (event.pageY ) + "px")
-//       .style("position", "absolute");
-//   }
-
-//   function mousemove(event) {
-//     tooltip.style("left", (event.pageX ) + "px")
-//       .style("top", (event.pageY) + "px");
-//   }
-
-//   function mouseout() {
-//     tooltip.transition()
-//       .duration(500)
-//       .style("opacity", 0);
-//   }
-
-
-
-
-//     svg.selectAll("path")
-//     .data(mergedData)
-//       .enter()
-//       .append("path")
-//       .attr("d", path)
-//       .attr("vector-effect", "non-scaling-stroke")
-//       .attr("stroke", "grey")
-//       .attr("stroke-width", "0.5px")
-//       .style("position", "absolute")
-//       .style("fill", d => colorScale(d.properties.total_per_cap))
-//       .on("mouseover", mouseover)
-//       .on("mousemove",mousemove)
-//       .on("mouseout", mouseout)
-
-// });
 
 
 
